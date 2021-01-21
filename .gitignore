@@ -1,6 +1,5 @@
 /vendor
 composer.phar
-composer.lock
 .DS_Store
 /app/config
 public/resources/*
@@ -9,3 +8,4 @@ public/vendor
 app/database/*.sqlite
 site/
 bootstrap/compiled.php
+.env.testing.php

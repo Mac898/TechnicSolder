@@ -29,7 +29,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue(is_a($response,'Illuminate\Http\JsonResponse'));
 		$json = $response->getData(true);
 
-		$this->assertTrue(array_key_exists('error', $json));
+		$this->assertTrue(array_key_exists('mods', $json));
 	}
 
 	public function testInvalidModpack()
@@ -87,7 +87,6 @@ class ApiTest extends TestCase {
 		$this->assertTrue(array_key_exists('author', $json));
 		$this->assertTrue(array_key_exists('description', $json));
 		$this->assertTrue(array_key_exists('link', $json));
-		$this->assertTrue(array_key_exists('donate', $json));
 		$this->assertTrue(array_key_exists('versions', $json));
 	}
 
@@ -101,8 +100,9 @@ class ApiTest extends TestCase {
 		$json = $response->getData(true);
 
 		$this->assertTrue(array_key_exists('minecraft', $json));
-		$this->assertTrue(array_key_exists('minecraft_md5', $json));
 		$this->assertTrue(array_key_exists('forge', $json));
+		$this->assertTrue(array_key_exists('java', $json));
+		$this->assertTrue(array_key_exists('memory', $json));
 		$this->assertTrue(array_key_exists('mods', $json));
 	}
 
@@ -116,6 +116,7 @@ class ApiTest extends TestCase {
 		$json = $response->getData(true);
 
 		$this->assertTrue(array_key_exists('md5', $json));
+		$this->assertTrue(array_key_exists('filesize', $json));
 		$this->assertTrue(array_key_exists('url', $json));
 	}
 }

@@ -1,4 +1,7 @@
 @extends('layouts/master')
+@section('title')
+    <title>Create Mod - TechnicSolder</title>
+@stop
 @section('content')
 <div class="page-header">
 <h1>Mod Library</h1>
@@ -37,11 +40,6 @@
                 <div class="form-group">
                     <label for="link">Mod Website</label>
                     <input type="text" class="form-control" name="link" id="link">
-                </div>
-                <div class="form-group">
-                    <label for="donatelink">Author Donation Link</label>
-                    <input type="text" class="form-control" name="donatelink" id="donatelink">
-                    <span class="help-block">This is only in use by the official Technic Solder</span>
                 </div>
 			</div>
 			<div class="col-md-6">

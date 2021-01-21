@@ -2,21 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>TechnicSolder {{ SOLDER_VERSION }}</title>
+    @section('title')
+      <title>TechnicSolder {{ SOLDER_VERSION }}</title>
+    @show
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {{ HTML::script('js/jquery-1.11.1.min.js') }}
-    {{ HTML::script('js/bootstrap.min.js') }}
-    {{ HTML::style('css/bootstrap.min.css') }}
-    {{ HTML::style('font-awesome/css/font-awesome.css') }}
-    {{ HTML::style('css/sb-admin.css') }}
-    {{ HTML::style('css/solder.css') }}
-    {{ HTML::script('js/plugins/metisMenu/jquery.metisMenu.js') }}
-    {{ HTML::script('js/sb-admin.js') }}
-    {{ HTML::script('js/plugins/dataTables/jquery.dataTables.js') }}
-    {{ HTML::script('js/plugins/dataTables/dataTables.bootstrap.js') }}
-    {{ HTML::style('css/dataTables.bootstrap.css') }}
-    {{ HTML::script('js/jquery.slugify.js') }}
-    {{ HTML::style('css/OpenSansfont.css') }}
+    <link rel="shortcut icon" href="{{{ asset('favicon.ico') }}}">
+    <script src="{{{ asset('js/jquery-3.3.1.min.js') }}}"></script>
+    <script src="{{{ asset('js/jquery-migrate-3.0.0.min.js') }}}"></script>
+    <script src="{{{ asset('js/bootstrap.min.js') }}}"></script>
+    <script src="{{{ asset('js/jquery.jgrowl.min.js') }}}"></script>
+    <link href="{{{ asset('css/bootstrap.min.css') }}}" rel="stylesheet">
+    <link href="{{{ asset('font-awesome/css/font-awesome.css') }}}" rel="stylesheet">
+    <link href="{{{ asset('css/sb-admin.css') }}}" rel="stylesheet">
+    <link href="{{{ asset('css/solder.css') }}}" rel="stylesheet">
+    <script src="{{{ asset('js/metisMenu.min.js') }}}"></script>
+    <script src="{{{ asset('js/sb-admin.js') }}}"></script>
+    <script src="{{{ asset('js/datatables.min.js') }}}"></script>
+    <link href="{{{ asset('css/jquery.jgrowl.min.css') }}}" rel="stylesheet">
+    <link href="{{{ asset('css/datatables.min.css') }}}" rel="stylesheet">
+    <link href="{{{ asset('css/metisMenu.min.css') }}}" rel="stylesheet">
+    <script src="{{{ asset('js/jquery.slugify.js') }}}"></script>
+    <script src="{{{ asset('js/nav-float.js') }}}"></script>
+    <link href="{{{ asset('css/OpenSansfont.css') }}}" rel="stylesheet">
     @yield('top')
   </head>
   <body>
@@ -65,21 +72,17 @@
       <div class="sidebar-collapse">
           <ul class="nav side-menu" id="side-menu">
               <li>
-                  <a href="{{ URL::to('dashboard') }}" {{ Request::is('dashboard') ? ' class="active"' : '' }}><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                  <a href="{{ URL::to('dashboard') }}" {{ Request::is('dashboard') ? ' class="mm-active"' : '' }}><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
               </li>
               <li>
                   <a href="#"><i class="fa fa-folder fa-fw"></i> Modpacks<span class="fa arrow"></span></a>
                   <ul class="nav nav-second-level">
 
-                       @foreach (Modpack::all() as $modpack)
+                       @foreach (Modpack::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE) as $modpack)
                         @if ($modpack->icon)
-                          @if (Config::get('solder.use_s3'))
-                          <li><a href="{{ URL::to('modpack/view/'.$modpack->id) }}"><img src="{{ Config::get('solder.s3_url') }}resources/{{ $modpack->slug }}/icon.png" style="width: 16px; height: 16px;"> {{ $modpack->name }}{{ $hidden = ($modpack->hidden ? " (Hidden)" : "") }}</a></li>
-                          @else
-                          <li><a href="{{ URL::to('modpack/view/'.$modpack->id) }}"><img src="{{ URL::asset('resources/' . $modpack->slug . '/icon.png') }}" style="width: 16px; height: 16px;"> {{ $modpack->name }}{{ $hidden = ($modpack->hidden ? " (Hidden)" : "") }}</a></li>
-                          @endif
+                          <li><a href="{{ URL::to('modpack/view/'.$modpack->id) }}"><img src="{{ URL::asset('resources/' . $modpack->slug . '/icon.png') }}" style="width: 16px; height: 16px;"> {{ $modpack->name }}{{ $modpack->hidden ? " (Hidden)" : "" }}</a></li>
                         @else
-                          <li><a href="{{ URL::to('modpack/view/'.$modpack->id) }}"><img src="{{ URL::asset('resources/default/icon.png') }}" style="width: 16px; height: 16px;"> {{ $modpack->name }}{{ $hidden = ($modpack->hidden ? " (Hidden)" : "") }}</a></li>
+                          <li><a href="{{ URL::to('modpack/view/'.$modpack->id) }}"><img src="{{ URL::asset('resources/default/icon.png') }}" style="width: 16px; height: 16px;"> {{ $modpack->name }}{{ $modpack->hidden ? " (Hidden)" : "" }}</a></li>
                         @endif
                       @endforeach
                       <li><a href="{{ URL::to('modpack/list') }}">Modpack List</a></li>
@@ -129,6 +132,13 @@
     <!-- /.row -->
 </div>
 <!-- /#page-wrapper -->
+<script type="text/javascript">
+    (function($){
+        $(function(){
+            $.jGrowl.defaults.closerTemplate = '<div class="alert alert-info">Close All</div>';
+        });
+    })(jQuery);
+    </script>
 @yield('bottom')
   </body>
 </html>

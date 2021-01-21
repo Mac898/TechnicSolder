@@ -162,17 +162,16 @@ Route::filter('solder_mods', function()
 		case 'delete':
 		$check = 'mods_delete';
 		break;
-		case 'edit':
-		$check = 'mods_manage';
-		break;
+		case 'modify':
 		case 'view':
-		$check = 'mods_manage';
-		break;
 		case 'list':
+		case 'add-version':
+		case 'rehash':
+		case 'delete-version':
 		$check = 'mods_manage';
 		break;
 		default:
-		return Redirect::to('mods/list');
+		return Redirect::to('mod/list');
 		break;
 	}
 	$perm = Auth::user()->permission;
@@ -203,11 +202,11 @@ Route::filter('build', function()
 {
 	$buildId = Request::segment(3);
 	$build = Build::find($buildId);
-	$modpack = $build->modpack;
-
 
 	if (empty($build))
 		return Redirect::to('dashboard');
+
+	$modpack = $build->modpack;
 
 	$perm = Auth::user()->permission;
 
@@ -216,4 +215,9 @@ Route::filter('build', function()
 		return Redirect::to('dashboard')
 			->with('permission','You do not have permission to access this area.');
 	}
+});
+
+Route::filter('cors', function($route, $request, $response)
+{
+    return $response->header('Access-Control-Allow-Origin', '*');
 });
